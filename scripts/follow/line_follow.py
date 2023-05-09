@@ -122,4 +122,5 @@ class Follower:
             self.twist.linear.x = 0
             self.twist.angular.z = 0
 
-        info_manager.set_twist(self.twist)
+        info_manager.set_is_running_inline(self.twist.linear.x)
+        info_manager.set_angular_z(self.twist.angular.z)

@@ -15,6 +15,7 @@
 
 from concurrent import futures
 import logging
+import threading
 
 import grpc
 import rpc.helloworld_pb2 as helloworld_pb2
@@ -27,7 +28,7 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
         return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
 
-def serve():
+def real_serve():
     port = '50051'
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
@@ -35,7 +36,9 @@ def serve():
     server.start()
     print("Server started, listening on " + port)
     server.wait_for_termination()
-
+    
+def serve():
+    threading.Thread(target=real_serve).start()
 
 if __name__ == '__main__':
     logging.basicConfig()
