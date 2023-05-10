@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "./stationpb";
+
+package station;
+
+service StationPassagerNumService {
+  rpc GetPassagerNum (GPNRequest) returns (GPNReply) {}
+  rpc ReducePassagerNum (RPNRequest) returns (RPNReply) {}
+}
+
+message GPNRequest {
+  int32 stationId = 1;
+}
+
+message GPNReply {
+  int32 passagerNum = 1;
+}
+
+message RPNRequest {
+  int32 stationId = 1;
+  int32 boarderNum = 2;
+}
+
+message RPNReply {
+  int32 ok = 1;
+}
