@@ -9,7 +9,7 @@ import rpc_pb2_grpc
 
 class rpcImpl(rpc_pb2_grpc.RPCServicer):
     def get_num(self, request, context):
-        num = 6
+        num = 60
         return rpc_pb2.RpcReply(num=str(num))
 
 
