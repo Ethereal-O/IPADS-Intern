@@ -46,7 +46,8 @@ class scheduler:
 
     def caculate_new_passenger(self, num):
         now_num = info_manager.get_passenger_num()
-        get_off_num = int(random.random()*config.RANDOMGETOFFSCALE)
+        get_off_num = min(
+            int(random.random()*config.RANDOMGETOFFSCALE), now_num)
         new_num = min(config.CAPICITY, num+now_num-get_off_num)
         max_change = max(get_off_num, new_num-now_num+get_off_num)
         return new_num, max_change/config.HUMANSPEED
