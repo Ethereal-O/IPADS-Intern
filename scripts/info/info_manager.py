@@ -86,6 +86,7 @@ class infoManager:
     def get_all(self):
         data = [{'mileage': self.mileage, 'speed': self.twist.linear.x,
                  'passenger_num': self.passenger_num}]
+        return data
 
     def stop(self):
         self.twist = Twist()

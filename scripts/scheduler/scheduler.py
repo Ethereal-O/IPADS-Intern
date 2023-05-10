@@ -4,7 +4,8 @@ import time
 from geometry_msgs.msg import Twist
 import rospy
 from config import config
-from webSocket import webSocket
+# from webSocket import webSocket
+from sockets import sockets
 from rpc.rpc_client import rpc_client
 import random
 
@@ -13,6 +14,7 @@ class scheduler:
     def __init__(self):
         self.cmd_vel_pub = rospy.Publisher("~cmd_vel", Twist, queue_size=1)
         # self.wsapp = webSocket.webSocket()
+        self.tcp_client = sockets.sockets()
         self.rpc_client = rpc_client()
         self.have_stop = {}
 
@@ -30,8 +32,9 @@ class scheduler:
     def start_continue_publish(self):
         threading.Thread(target=self.single_publish).start()
 
-    def start_websocket(self):
+    def start_socket(self):
         # self.wsapp.start()
+        self.tcp_client.start()
         pass
 
     def check_is_stop(self, mileage):
@@ -47,15 +50,17 @@ class scheduler:
     def caculate_new_passenger(self, num):
         now_num = info_manager.get_passenger_num()
         get_off_num = min(
-            int(random.random()*config.RANDOMGETOFFSCALE), now_num)
+            int(random.random()*config.RANDOM_GETOFF_SCALE), now_num)
         new_num = min(config.CAPICITY, num+now_num-get_off_num)
         max_change = max(get_off_num, new_num-now_num+get_off_num)
-        return new_num, max_change/config.HUMANSPEED
+        return new_num, max_change/config.HUMAN_SPEED
 
     def check_and_report(self, stop_time):
-        pass
         # if stop_time > config.MAXSTOPTIME:
         #     self.wsapp.send_message(stop_time)
+        if stop_time > config.MAX_STOP_TIME:
+            self.tcp_client.send_message(stop_time)
+        pass
 
     def resume_running(self):
         info_manager.set_is_running_outsidestop(True)
@@ -85,7 +90,7 @@ class scheduler:
     def start_all(self):
         # start changing paramter
         self.start_continue_publish()
-        # start websocket client
-        self.start_websocket()
+        # start socket client
+        self.start_socket()
         # start rpc client
         self.start_rpc_checker()
