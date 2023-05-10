@@ -7,6 +7,7 @@ from config import config
 def log_printer(func):
     def new_func(_, val):
         rospy.logwarn(val)
+        return func(_, val)
     return new_func
 
 
@@ -40,9 +41,10 @@ class infoManager:
         self.set_is_running(
             self.is_running_inline and self.is_running_outsidestop)
 
-    def get_is_running(self):
+    def get_is_running_outsidestop(self):
         return self.is_running_outsidestop
 
+    @log_printer
     def set_is_running(self, val):
         self.is_running = val
 
@@ -70,13 +72,14 @@ class infoManager:
     def get_mileage(self):
         return self.mileage
 
-    @log_printer
+    # @log_printer
     def set_mileage(self, val):
         self.mileage = val
 
     def get_passenger_num(self):
         return self.passenger_num
 
+    @log_printer
     def set_passenger_num(self, val):
         self.passenger_num = val
 

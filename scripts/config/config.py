@@ -1,3 +1,4 @@
-SLEEP_TIME = 0.01
-SERVER="ws://localhost:8765"
+SLEEP_TIME = 0.03
+CLOUD_SERVER="ws://localhost:8765"
+EDGE_SERVER="localhost:50051"
 CAPICITY = 100

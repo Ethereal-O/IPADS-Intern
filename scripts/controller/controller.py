@@ -1,7 +1,5 @@
 def start():
     from follow import line_follow
-    from rpc import greeter_server
-    from webSocket import webSocket
     from scheduler import scheduler
     from odometry import odometry
     from config import config
@@ -9,13 +7,10 @@ def start():
     import time
     follower = line_follow.Follower()
     odom = odometry.odometry()
-    # wsapp = webSocket.webSocket()
     sche = scheduler.scheduler()
-    greeter_server.serve()
 
     time.sleep(10*config.SLEEP_TIME)
-    sche.start_continue_publish()
-    
+    sche.start_all()
+
     # test
-    info_manager.set_linear_x(0.18)
-    
+    info_manager.set_linear_x(0.15)

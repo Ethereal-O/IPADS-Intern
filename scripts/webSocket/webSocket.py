@@ -8,10 +8,12 @@ from info.info_manager import info_manager
 
 class webSocket:
     def __init__(self):
-        self.wsapp = websocket.WebSocketApp(config.SERVER,
+        self.wsapp = websocket.WebSocketApp(config.CLOUD_SERVER,
                                             on_open=self.on_open,
                                             on_message=self.on_message,
                                             on_close=self.on_close)
+
+    def start(self):
         self.wsapp.run_forever()
 
     def report(self):
@@ -25,7 +27,7 @@ class webSocket:
 
     def on_message(self, wsapp, message):
         rospy.logwarn("on_message:" + str(message))
-        # info_manager.set_linear_x(message)
+        info_manager.set_linear_x(message)
 
     def on_close(self, wsapp):
         rospy.logwarn("on_close")
