@@ -6,8 +6,7 @@ import rpc.rpc_pb2 as rpc__pb2
 
 
 class RPCStub(object):
-    """The greeting service definition.
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -15,20 +14,29 @@ class RPCStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.get_num = channel.unary_unary(
-            '/rpc.RPC/get_num',
-            request_serializer=rpc__pb2.RpcRequest.SerializeToString,
-            response_deserializer=rpc__pb2.RpcReply.FromString,
-        )
+        self.get_passenger_num = channel.unary_unary(
+                '/rpc.RPC/get_passenger_num',
+                request_serializer=rpc__pb2.GPNRequest.SerializeToString,
+                response_deserializer=rpc__pb2.GPNReply.FromString,
+                )
+        self.reduce_passenger_num = channel.unary_unary(
+                '/rpc.RPC/reduce_passenger_num',
+                request_serializer=rpc__pb2.RPNRequest.SerializeToString,
+                response_deserializer=rpc__pb2.RPNReply.FromString,
+                )
 
 
 class RPCServicer(object):
-    """The greeting service definition.
-    """
+    """Missing associated documentation comment in .proto file."""
 
-    def get_num(self, request, context):
-        """Sends a request
-        """
+    def get_passenger_num(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def reduce_passenger_num(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -36,36 +44,56 @@ class RPCServicer(object):
 
 def add_RPCServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        'get_num': grpc.unary_unary_rpc_method_handler(
-            servicer.get_num,
-            request_deserializer=rpc__pb2.RpcRequest.FromString,
-            response_serializer=rpc__pb2.RpcReply.SerializeToString,
-        ),
+            'get_passenger_num': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_passenger_num,
+                    request_deserializer=rpc__pb2.GPNRequest.FromString,
+                    response_serializer=rpc__pb2.GPNReply.SerializeToString,
+            ),
+            'reduce_passenger_num': grpc.unary_unary_rpc_method_handler(
+                    servicer.reduce_passenger_num,
+                    request_deserializer=rpc__pb2.RPNRequest.FromString,
+                    response_serializer=rpc__pb2.RPNReply.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        'rpc.RPC', rpc_method_handlers)
+            'rpc.RPC', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
+
  # This class is part of an EXPERIMENTAL API.
-
-
 class RPC(object):
-    """The greeting service definition.
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def get_num(request,
-                target,
-                options=(),
-                channel_credentials=None,
-                call_credentials=None,
-                insecure=False,
-                compression=None,
-                wait_for_ready=None,
-                timeout=None,
-                metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/get_num',
-                                             rpc__pb2.RpcRequest.SerializeToString,
-                                             rpc__pb2.RpcReply.FromString,
-                                             options, channel_credentials,
-                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+    def get_passenger_num(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/get_passenger_num',
+            rpc__pb2.GPNRequest.SerializeToString,
+            rpc__pb2.GPNReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def reduce_passenger_num(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/reduce_passenger_num',
+            rpc__pb2.RPNRequest.SerializeToString,
+            rpc__pb2.RPNReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

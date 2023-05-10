@@ -11,18 +11,24 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\trpc.proto\x12\x03rpc\",\n\nRpcRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08stop_num\x18\x02 \x01(\t\"\x17\n\x08RpcReply\x12\x0b\n\x03num\x18\x01 \x01(\t22\n\x03RPC\x12+\n\x07get_num\x12\x0f.rpc.RpcRequest\x1a\r.rpc.RpcReply\"\x00\x42(\n\x14io.grpc.examples.rpcB\x08RpcProtoP\x01\xa2\x02\x03HLWb\x06proto3')
+
+
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\trpc.proto\x12\x03rpc\" \n\nGPNRequest\x12\x12\n\nstation_id\x18\x01 \x01(\x05\"!\n\x08GPNReply\x12\x15\n\rpassenger_num\x18\x01 \x01(\x05\"5\n\nRPNRequest\x12\x12\n\nstation_id\x18\x01 \x01(\x05\x12\x13\n\x0b\x62oarder_num\x18\x02 \x01(\x05\"\x16\n\x08RPNReply\x12\n\n\x02ok\x18\x01 \x01(\x05\x32v\n\x03RPC\x12\x35\n\x11get_passenger_num\x12\x0f.rpc.GPNRequest\x1a\r.rpc.GPNReply\"\x00\x12\x38\n\x14reduce_passenger_num\x12\x0f.rpc.RPNRequest\x1a\r.rpc.RPNReply\"\x00\x42(\n\x14io.grpc.examples.rpcB\x08RpcProtoP\x01\xa2\x02\x03HLWb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'rpc_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
-    DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b'\n\024io.grpc.examples.rpcB\010RpcProtoP\001\242\002\003HLW'
-    _RPCREQUEST._serialized_start = 18
-    _RPCREQUEST._serialized_end = 62
-    _RPCREPLY._serialized_start = 64
-    _RPCREPLY._serialized_end = 87
-    _RPC._serialized_start = 89
-    _RPC._serialized_end = 139
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'\n\024io.grpc.examples.rpcB\010RpcProtoP\001\242\002\003HLW'
+  _GPNREQUEST._serialized_start=18
+  _GPNREQUEST._serialized_end=50
+  _GPNREPLY._serialized_start=52
+  _GPNREPLY._serialized_end=85
+  _RPNREQUEST._serialized_start=87
+  _RPNREQUEST._serialized_end=140
+  _RPNREPLY._serialized_start=142
+  _RPNREPLY._serialized_end=164
+  _RPC._serialized_start=166
+  _RPC._serialized_end=284
 # @@protoc_insertion_point(module_scope)

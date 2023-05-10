@@ -18,6 +18,12 @@ class rpc_client:
 
     def get_passenger_num(self, stop_num):
         stub = rpc_pb2_grpc.RPCStub(self.channel)
-        response = stub.get_num(rpc_pb2.RpcRequest(
-            name='car', stop_num=str(stop_num)))
-        return int(response.num)
+        response = stub.get_passenger_num(rpc_pb2.GPNRequest(
+            station_id=int(stop_num)))
+        return int(response.passenger_num)
+
+    def reduce_passenger_num(self, stop_num, reduce_num):
+        stub = rpc_pb2_grpc.RPCStub(self.channel)
+        response = stub.reduce_passenger_num(rpc_pb2.RPNRequest(
+            station_id=int(stop_num), boarder_num=int(reduce_num)))
+        return int(response.ok)

@@ -21,7 +21,7 @@ class sockets:
 
     def report(self):
         while (True):
-            self.tcp_socket.send(str(info_manager.get_all()).encode("utf-8"))
+            self.send_message(info_manager.get_all())
             time.sleep(config.SLEEP_TIME)
 
     def recv_msg(self):
@@ -30,4 +30,4 @@ class sockets:
             info_manager.set_linear_x(float(recv_data[0].decode('utf-8')))
 
     def send_message(self, message):
-        self.tcp_socket.send(message)
+        self.tcp_socket.send(str(message).encode("utf-8"))

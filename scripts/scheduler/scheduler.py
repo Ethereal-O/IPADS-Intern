@@ -52,8 +52,9 @@ class scheduler:
         get_off_num = min(
             int(random.random()*config.RANDOM_GETOFF_SCALE), now_num)
         new_num = min(config.CAPICITY, num+now_num-get_off_num)
-        max_change = max(get_off_num, new_num-now_num+get_off_num)
-        return new_num, max_change/config.HUMAN_SPEED
+        get_on_num = new_num-now_num+get_off_num
+        max_change = max(get_off_num, get_on_num)
+        return new_num, get_off_num, get_on_num, max_change/config.HUMAN_SPEED
 
     def check_and_report(self, stop_time):
         # if stop_time > config.MAXSTOPTIME:
@@ -74,7 +75,11 @@ class scheduler:
                 want_num = self.rpc_client.get_passenger_num(
                     self.caculate_stop_num(info_manager.get_mileage()))
                 # get real passenger
-                now_num, stop_time = self.caculate_new_passenger(want_num)
+                now_num, get_off_num, get_on_num, stop_time = self.caculate_new_passenger(
+                    want_num)
+                # reply to edge server
+                self.rpc_client.reduce_passenger_num(
+                    self.caculate_stop_num(info_manager.get_mileage()), get_on_num)
                 # check and report
                 self.check_and_report(stop_time)
                 # set passenger

@@ -8,9 +8,13 @@ import rpc_pb2_grpc
 
 
 class rpcImpl(rpc_pb2_grpc.RPCServicer):
-    def get_num(self, request, context):
+    def get_passenger_num(self, request, context):
         num = 60
-        return rpc_pb2.RpcReply(num=str(num))
+        return rpc_pb2.GPNReply(passenger_num=num)
+
+    def reduce_passenger_num(self, request, context):
+        print("get report")
+        return rpc_pb2.RPNReply(ok=1)
 
 
 def real_serve():
