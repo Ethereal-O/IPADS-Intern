@@ -18,123 +18,123 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// StationPassagerNumServiceClient is the client API for StationPassagerNumService service.
+// StationPassengerNumServiceClient is the client API for StationPassengerNumService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type StationPassagerNumServiceClient interface {
-	GetPassagerNum(ctx context.Context, in *GPNRequest, opts ...grpc.CallOption) (*GPNReply, error)
-	ReducePassagerNum(ctx context.Context, in *RPNRequest, opts ...grpc.CallOption) (*RPNReply, error)
+type StationPassengerNumServiceClient interface {
+	GetPassengerNum(ctx context.Context, in *GPNRequest, opts ...grpc.CallOption) (*GPNReply, error)
+	ReducePassengerNum(ctx context.Context, in *RPNRequest, opts ...grpc.CallOption) (*RPNReply, error)
 }
 
-type stationPassagerNumServiceClient struct {
+type stationPassengerNumServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewStationPassagerNumServiceClient(cc grpc.ClientConnInterface) StationPassagerNumServiceClient {
-	return &stationPassagerNumServiceClient{cc}
+func NewStationPassengerNumServiceClient(cc grpc.ClientConnInterface) StationPassengerNumServiceClient {
+	return &stationPassengerNumServiceClient{cc}
 }
 
-func (c *stationPassagerNumServiceClient) GetPassagerNum(ctx context.Context, in *GPNRequest, opts ...grpc.CallOption) (*GPNReply, error) {
+func (c *stationPassengerNumServiceClient) GetPassengerNum(ctx context.Context, in *GPNRequest, opts ...grpc.CallOption) (*GPNReply, error) {
 	out := new(GPNReply)
-	err := c.cc.Invoke(ctx, "/station.StationPassagerNumService/GetPassagerNum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/station.StationPassengerNumService/GetPassengerNum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *stationPassagerNumServiceClient) ReducePassagerNum(ctx context.Context, in *RPNRequest, opts ...grpc.CallOption) (*RPNReply, error) {
+func (c *stationPassengerNumServiceClient) ReducePassengerNum(ctx context.Context, in *RPNRequest, opts ...grpc.CallOption) (*RPNReply, error) {
 	out := new(RPNReply)
-	err := c.cc.Invoke(ctx, "/station.StationPassagerNumService/ReducePassagerNum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/station.StationPassengerNumService/ReducePassengerNum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// StationPassagerNumServiceServer is the server API for StationPassagerNumService service.
-// All implementations must embed UnimplementedStationPassagerNumServiceServer
+// StationPassengerNumServiceServer is the server API for StationPassengerNumService service.
+// All implementations must embed UnimplementedStationPassengerNumServiceServer
 // for forward compatibility
-type StationPassagerNumServiceServer interface {
-	GetPassagerNum(context.Context, *GPNRequest) (*GPNReply, error)
-	ReducePassagerNum(context.Context, *RPNRequest) (*RPNReply, error)
-	mustEmbedUnimplementedStationPassagerNumServiceServer()
+type StationPassengerNumServiceServer interface {
+	GetPassengerNum(context.Context, *GPNRequest) (*GPNReply, error)
+	ReducePassengerNum(context.Context, *RPNRequest) (*RPNReply, error)
+	mustEmbedUnimplementedStationPassengerNumServiceServer()
 }
 
-// UnimplementedStationPassagerNumServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedStationPassagerNumServiceServer struct {
+// UnimplementedStationPassengerNumServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedStationPassengerNumServiceServer struct {
 }
 
-func (UnimplementedStationPassagerNumServiceServer) GetPassagerNum(context.Context, *GPNRequest) (*GPNReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPassagerNum not implemented")
+func (UnimplementedStationPassengerNumServiceServer) GetPassengerNum(context.Context, *GPNRequest) (*GPNReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPassengerNum not implemented")
 }
-func (UnimplementedStationPassagerNumServiceServer) ReducePassagerNum(context.Context, *RPNRequest) (*RPNReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReducePassagerNum not implemented")
+func (UnimplementedStationPassengerNumServiceServer) ReducePassengerNum(context.Context, *RPNRequest) (*RPNReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReducePassengerNum not implemented")
 }
-func (UnimplementedStationPassagerNumServiceServer) mustEmbedUnimplementedStationPassagerNumServiceServer() {
+func (UnimplementedStationPassengerNumServiceServer) mustEmbedUnimplementedStationPassengerNumServiceServer() {
 }
 
-// UnsafeStationPassagerNumServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to StationPassagerNumServiceServer will
+// UnsafeStationPassengerNumServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to StationPassengerNumServiceServer will
 // result in compilation errors.
-type UnsafeStationPassagerNumServiceServer interface {
-	mustEmbedUnimplementedStationPassagerNumServiceServer()
+type UnsafeStationPassengerNumServiceServer interface {
+	mustEmbedUnimplementedStationPassengerNumServiceServer()
 }
 
-func RegisterStationPassagerNumServiceServer(s grpc.ServiceRegistrar, srv StationPassagerNumServiceServer) {
-	s.RegisterService(&StationPassagerNumService_ServiceDesc, srv)
+func RegisterStationPassengerNumServiceServer(s grpc.ServiceRegistrar, srv StationPassengerNumServiceServer) {
+	s.RegisterService(&StationPassengerNumService_ServiceDesc, srv)
 }
 
-func _StationPassagerNumService_GetPassagerNum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _StationPassengerNumService_GetPassengerNum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GPNRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StationPassagerNumServiceServer).GetPassagerNum(ctx, in)
+		return srv.(StationPassengerNumServiceServer).GetPassengerNum(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/station.StationPassagerNumService/GetPassagerNum",
+		FullMethod: "/station.StationPassengerNumService/GetPassengerNum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StationPassagerNumServiceServer).GetPassagerNum(ctx, req.(*GPNRequest))
+		return srv.(StationPassengerNumServiceServer).GetPassengerNum(ctx, req.(*GPNRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StationPassagerNumService_ReducePassagerNum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _StationPassengerNumService_ReducePassengerNum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RPNRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StationPassagerNumServiceServer).ReducePassagerNum(ctx, in)
+		return srv.(StationPassengerNumServiceServer).ReducePassengerNum(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/station.StationPassagerNumService/ReducePassagerNum",
+		FullMethod: "/station.StationPassengerNumService/ReducePassengerNum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StationPassagerNumServiceServer).ReducePassagerNum(ctx, req.(*RPNRequest))
+		return srv.(StationPassengerNumServiceServer).ReducePassengerNum(ctx, req.(*RPNRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// StationPassagerNumService_ServiceDesc is the grpc.ServiceDesc for StationPassagerNumService service.
+// StationPassengerNumService_ServiceDesc is the grpc.ServiceDesc for StationPassengerNumService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var StationPassagerNumService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "station.StationPassagerNumService",
-	HandlerType: (*StationPassagerNumServiceServer)(nil),
+var StationPassengerNumService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "station.StationPassengerNumService",
+	HandlerType: (*StationPassengerNumServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetPassagerNum",
-			Handler:    _StationPassagerNumService_GetPassagerNum_Handler,
+			MethodName: "GetPassengerNum",
+			Handler:    _StationPassengerNumService_GetPassengerNum_Handler,
 		},
 		{
-			MethodName: "ReducePassagerNum",
-			Handler:    _StationPassagerNumService_ReducePassagerNum_Handler,
+			MethodName: "ReducePassengerNum",
+			Handler:    _StationPassengerNumService_ReducePassengerNum_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

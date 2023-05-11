@@ -6,27 +6,28 @@ import (
 	"log"
 	"net"
 
-	grpclib "google.golang.org/grpc"
-	"edgesystem/simulate"
 	pb "edgesystem/grpc/proto/stationpb"
+	"edgesystem/simulate"
+
+	grpclib "google.golang.org/grpc"
 )
 
 type server struct {
 	stations []simulate.Station
-	pb.UnimplementedStationPassagerNumServiceServer
+	pb.UnimplementedStationPassengerNumServiceServer
 }
 
-func (s *server) GetPassagerNum(ctx context.Context, req *pb.GPNRequest) (*pb.GPNReply, error) {
+func (s *server) GetPassengerNum(ctx context.Context, req *pb.GPNRequest) (*pb.GPNReply, error) {
 	log.Printf("Received: %v", req.GetStationId())
 	stationId := req.GetStationId()
-	return &pb.GPNReply{PassagerNum: int32(s.stations[stationId].GetPassagers())}, nil
+	return &pb.GPNReply{PassengerNum: int32(s.stations[stationId].GetPassengers())}, nil
 }
 
-func (s *server) ReducePassagerNum(ctx context.Context, req *pb.RPNRequest) (*pb.RPNReply, error) {
+func (s *server) ReducePassengerNum(ctx context.Context, req *pb.RPNRequest) (*pb.RPNReply, error) {
 	log.Printf("Received: %v", req.GetStationId())
 	stationId := req.GetStationId()
 	boarderNum := int(req.GetBoarderNum())
-	s.stations[stationId].SetNumOfPassagers(s.stations[stationId].GetPassagers() - boarderNum)
+	s.stations[stationId].SetNumOfPassengers(s.stations[stationId].GetPassengers() - boarderNum)
 	return &pb.RPNReply{Ok: 1}, nil
 }
 
@@ -36,7 +37,7 @@ func RunGrpcServer(port uint16, stations []simulate.Station) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpclib.NewServer()
-	pb.RegisterStationPassagerNumServiceServer(s, &server{
+	pb.RegisterStationPassengerNumServiceServer(s, &server{
 		stations: stations,
 	})
 	log.Printf("server listening at %v", listen.Addr())
