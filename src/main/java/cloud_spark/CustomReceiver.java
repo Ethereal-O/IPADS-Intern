@@ -7,15 +7,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static utils.ScheduleUtil.peopleTraffic;
 
 public class CustomReceiver extends Receiver<String> {
     private final Integer port;
 
-    private final Map<Integer, Socket> receiver = new HashMap<>();
+    private static final Map<Integer, Socket> receiver = new ConcurrentHashMap<>();
 
     public CustomReceiver(Integer port){
         super(StorageLevel.MEMORY_AND_DISK_2());
@@ -38,7 +41,6 @@ public class CustomReceiver extends Receiver<String> {
             try {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(sendInfo);
-                out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,23 +85,40 @@ public class CustomReceiver extends Receiver<String> {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                 String inputLine;
-                int train_id;
                 inputLine = in.readLine();
-                if(inputLine == null){
-                    System.out.printf("Closing connection with %s:%d\n",
-                            clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort());
-                    return;
-                }else{
-                    train_id = Integer.parseInt(inputLine);
-                    receiver.put(train_id, clientSocket);
-                }
-
-                while ((inputLine = in.readLine()) != null){
-                    store(inputLine);
+                //TODO:we should handle wrong input
+                if(inputLine != null && inputLine.length() > 5){
+                    if(inputLine.startsWith("train-")){
+                        int train_id = Integer.parseInt(inputLine.substring(6));
+                        receiver.put(train_id, clientSocket);
+                        while ((inputLine = in.readLine()) != null){
+                            store(inputLine);
+                        }
+                        receiver.remove(train_id);
+                    }else if(inputLine.startsWith("station-")){
+                        int id = 0;
+                        while ((inputLine = in.readLine()) != null){
+                            String[] cols = inputLine.split(",");
+                            id = Integer.parseInt(cols[0]);
+                            Station station;
+                            if(peopleTraffic.containsKey(id)){
+                                station = peopleTraffic.get(id);
+                                BigInteger t = BigInteger.valueOf(Long.parseLong(cols[1]));
+                                if(t.compareTo(station.getTime()) > 0){
+                                    station.setTime(t);
+                                    station.setPeopleNum(Integer.parseInt(cols[2]));
+                                }
+                                peopleTraffic.put(id, station);
+                            }else{
+                                station = new Station(id, Long.parseLong(cols[1]), Integer.parseInt(cols[2]), Integer.parseInt(cols[3]));
+                                peopleTraffic.put(id, station);
+                            }
+                        }
+                        peopleTraffic.remove(id);
+                    }
                 }
                 System.out.printf("Closing connection with %s:%d\n",
                         clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort());
-                receiver.remove(train_id);
                 in.close();
                 out.close();
             } catch (IOException e) {

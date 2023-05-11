@@ -3,8 +3,15 @@
     <option name="myName" value="Project Default" />
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <Languages>
-        <language minSize="50" name="Java" />
+        <language minSize="92" name="Java" />
       </Languages>
+    </inspection_tool>
+    <inspection_tool class="MavenPackageUpdate" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="excludeList">
+        <list>
+          <option value="org.eclipse.jetty.websocket:websocket-servlet" />
+        </list>
+      </option>
     </inspection_tool>
   </profile>
 </component>

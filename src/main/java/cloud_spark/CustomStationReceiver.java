@@ -7,8 +7,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static utils.ScheduleUtil.peopleTraffic;
+
 
 public class CustomStationReceiver extends Receiver<String> {
     private final Integer port;
@@ -43,7 +47,7 @@ public class CustomStationReceiver extends Receiver<String> {
                 Socket clientSocket = serverSocket.accept();
                 System.out.printf("Connected to client %s:%d\n",
                         clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort());
-                Thread t = new CustomStationReceiver.ClientThread(clientSocket);
+                Thread t = new ClientThread(clientSocket);
                 t.start();
             } catch (IOException e) {
                 System.err.println("Accept failed.");
@@ -52,7 +56,7 @@ public class CustomStationReceiver extends Receiver<String> {
         }
     }
 
-    private class ClientThread extends Thread{
+    private static class ClientThread extends Thread{
         private final Socket clientSocket;
 
         public ClientThread(Socket clientSocket){
@@ -67,7 +71,22 @@ public class CustomStationReceiver extends Receiver<String> {
 
                 String inputLine;
                 while ((inputLine = in.readLine()) != null){
-                    store(inputLine);
+                    String[] cols = inputLine.split(",");
+                    int id = Integer.parseInt(cols[0]);
+                    Station station;
+                    if(peopleTraffic.containsKey(id)){
+                        station = peopleTraffic.get(id);
+                        BigInteger t = BigInteger.valueOf(Long.parseLong(cols[1]));
+                        if(t.compareTo(station.getTime()) > 0){
+                            station.setTime(t);
+                            station.setPeopleNum(Integer.parseInt(cols[2]));
+                        }
+                        peopleTraffic.put(id, station);
+                    }else{
+                        station = new Station(id, Long.parseLong(cols[1]), Integer.parseInt(cols[2]), Integer.parseInt(cols[3]));
+                        peopleTraffic.put(id, station);
+                    }
+                    //store(inputLine);
                 }
                 System.out.printf("Closing connection with %s:%d\n",
                         clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort());

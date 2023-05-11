@@ -1,13 +1,10 @@
 package socket;
 
-import org.apache.spark.sql.sources.In;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -48,7 +45,8 @@ public class Client extends Thread{
 
             while (true) {
                 String in = inputLine.getAndSet("");
-                if(!in.equals("")){
+                if(in != null && !in.equals("")){
+                    System.out.printf("[%s] Receive a message from server: %s\n", currentThread().getName(), in);
                     String[] text = in.split(",");
                     if(Integer.parseInt(text[0]) == train_id){
                         position = Integer.parseInt(text[2]);
