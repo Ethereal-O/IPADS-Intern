@@ -6,6 +6,7 @@ import grpc
 import rpc.rpc_pb2 as rpc_pb2
 import rpc.rpc_pb2_grpc as rpc_pb2_grpc
 from config import config
+from helper.helper import helper
 EDGE_SERVER = config.EDGE_SERVER
 
 
@@ -16,12 +17,14 @@ class rpc_client:
     def __del__(self):
         self.channel.close()
 
+    @helper.clocker
     def get_passenger_num(self, stop_num):
         stub = rpc_pb2_grpc.RPCStub(self.channel)
         response = stub.get_passenger_num(rpc_pb2.GPNRequest(
             station_id=int(stop_num)))
         return int(response.passenger_num)
 
+    @helper.clocker
     def reduce_passenger_num(self, stop_num, reduce_num):
         stub = rpc_pb2_grpc.RPCStub(self.channel)
         response = stub.reduce_passenger_num(rpc_pb2.RPNRequest(

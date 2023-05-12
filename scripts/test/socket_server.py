@@ -12,6 +12,7 @@ while True:
     data = c.recv(1024)
     print(data.decode('utf-8'))
     print('连接地址：', addr)
-    c.send('0.15'.encode('utf-8'))
+    # c.send('0.15'.encode('utf-8'))
+    c.send('0'.encode('utf-8'))
     # 关闭连接
     # c.close()

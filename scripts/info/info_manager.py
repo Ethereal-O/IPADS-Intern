@@ -2,13 +2,7 @@ from geometry_msgs.msg import Twist
 import rospy
 import json
 from config import config
-
-
-def log_printer(func):
-    def new_func(_, val):
-        rospy.logwarn(val)
-        return func(_, val)
-    return new_func
+from helper.helper import helper
 
 
 class infoManager:
@@ -27,6 +21,8 @@ class infoManager:
         self.passenger_num = 0
         # passenger capicity
         self.capicity = config.CAPICITY
+        # car id
+        self.id = config.CAR_ID
 
     def set_is_running_inline(self, val):
         self.is_running_inline = val
@@ -44,7 +40,7 @@ class infoManager:
     def get_is_running_outsidestop(self):
         return self.is_running_outsidestop
 
-    @log_printer
+    @helper.log_printer
     def set_is_running(self, val):
         self.is_running = val
 
@@ -72,19 +68,19 @@ class infoManager:
     def get_mileage(self):
         return self.mileage
 
-    # @log_printer
+    # @helper.log_printer
     def set_mileage(self, val):
         self.mileage = val
 
     def get_passenger_num(self):
         return self.passenger_num
 
-    @log_printer
+    @helper.log_printer
     def set_passenger_num(self, val):
         self.passenger_num = val
 
     def get_all(self):
-        data = [{'mileage': self.mileage, 'speed': self.twist.linear.x,
+        data = [{'id': self.id, 'mileage': self.mileage, 'speed': self.twist.linear.x,
                  'passenger_num': self.passenger_num}]
         return data
 
