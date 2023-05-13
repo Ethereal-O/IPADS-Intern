@@ -32,6 +32,7 @@ class infoManager:
     def get_is_running_inline(self):
         return self.is_running_inline
 
+    @helper.log_printer
     def set_is_running_outsidestop(self, val):
         self.is_running_outsidestop = val
         self.set_is_running(
@@ -40,7 +41,7 @@ class infoManager:
     def get_is_running_outsidestop(self):
         return self.is_running_outsidestop
 
-    @helper.log_printer
+    # @helper.log_printer
     def set_is_running(self, val):
         self.is_running = val
 
