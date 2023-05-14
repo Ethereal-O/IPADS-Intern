@@ -14,13 +14,13 @@ class RPCStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.get_passenger_num = channel.unary_unary(
-                '/rpc.RPC/get_passenger_num',
+        self.GetPassengerNum = channel.unary_unary(
+                '/rpc.RPC/GetPassengerNum',
                 request_serializer=rpc__pb2.GPNRequest.SerializeToString,
                 response_deserializer=rpc__pb2.GPNReply.FromString,
                 )
-        self.reduce_passenger_num = channel.unary_unary(
-                '/rpc.RPC/reduce_passenger_num',
+        self.ReducePassengerNum = channel.unary_unary(
+                '/rpc.RPC/ReducePassengerNum',
                 request_serializer=rpc__pb2.RPNRequest.SerializeToString,
                 response_deserializer=rpc__pb2.RPNReply.FromString,
                 )
@@ -29,13 +29,13 @@ class RPCStub(object):
 class RPCServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def get_passenger_num(self, request, context):
+    def GetPassengerNum(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def reduce_passenger_num(self, request, context):
+    def ReducePassengerNum(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -44,13 +44,13 @@ class RPCServicer(object):
 
 def add_RPCServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'get_passenger_num': grpc.unary_unary_rpc_method_handler(
-                    servicer.get_passenger_num,
+            'GetPassengerNum': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPassengerNum,
                     request_deserializer=rpc__pb2.GPNRequest.FromString,
                     response_serializer=rpc__pb2.GPNReply.SerializeToString,
             ),
-            'reduce_passenger_num': grpc.unary_unary_rpc_method_handler(
-                    servicer.reduce_passenger_num,
+            'ReducePassengerNum': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReducePassengerNum,
                     request_deserializer=rpc__pb2.RPNRequest.FromString,
                     response_serializer=rpc__pb2.RPNReply.SerializeToString,
             ),
@@ -65,7 +65,7 @@ class RPC(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def get_passenger_num(request,
+    def GetPassengerNum(request,
             target,
             options=(),
             channel_credentials=None,
@@ -75,14 +75,14 @@ class RPC(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/get_passenger_num',
+        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/GetPassengerNum',
             rpc__pb2.GPNRequest.SerializeToString,
             rpc__pb2.GPNReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def reduce_passenger_num(request,
+    def ReducePassengerNum(request,
             target,
             options=(),
             channel_credentials=None,
@@ -92,7 +92,7 @@ class RPC(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/reduce_passenger_num',
+        return grpc.experimental.unary_unary(request, target, '/rpc.RPC/ReducePassengerNum',
             rpc__pb2.RPNRequest.SerializeToString,
             rpc__pb2.RPNReply.FromString,
             options, channel_credentials,

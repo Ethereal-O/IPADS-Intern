@@ -20,13 +20,13 @@ class rpc_client:
     @helper.clocker
     def get_passenger_num(self, stop_num):
         stub = rpc_pb2_grpc.RPCStub(self.channel)
-        response = stub.get_passenger_num(rpc_pb2.GPNRequest(
-            station_id=int(stop_num)))
-        return int(response.passenger_num)
+        response = stub.GetPassengerNum(rpc_pb2.GPNRequest(
+            stationId=int(stop_num)))
+        return int(response.passengerNum)
 
     @helper.clocker
     def reduce_passenger_num(self, stop_num, reduce_num):
         stub = rpc_pb2_grpc.RPCStub(self.channel)
-        response = stub.reduce_passenger_num(rpc_pb2.RPNRequest(
-            station_id=int(stop_num), boarder_num=int(reduce_num)))
+        response = stub.ReducePassengerNum(rpc_pb2.RPNRequest(
+            stationId=int(stop_num), boarderNum=int(reduce_num)))
         return int(response.ok)

@@ -8,11 +8,11 @@ import rpc_pb2_grpc
 
 
 class rpcImpl(rpc_pb2_grpc.RPCServicer):
-    def get_passenger_num(self, request, context):
+    def GetPassengerNum(self, request, context):
         num = 60
-        return rpc_pb2.GPNReply(passenger_num=num)
+        return rpc_pb2.GPNReply(passengerNum=num)
 
-    def reduce_passenger_num(self, request, context):
+    def ReducePassengerNum(self, request, context):
         print("get report")
         return rpc_pb2.RPNReply(ok=1)
 
