@@ -45,7 +45,7 @@ class scheduler:
         return False
 
     def caculate_stop_num(self, mileage):
-        return (mileage*10)//10
+        return 0 if mileage < 0 else (mileage*10)//10
 
     def caculate_new_passenger(self, num):
         now_num = info_manager.get_passenger_num()
