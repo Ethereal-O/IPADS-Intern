@@ -13,7 +13,10 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static utils.ScheduleUtil.peopleTraffic;
+import static utils.ScheduleUtil.stations;
+import static utils.ScheduleUtil.trains;
+import static utils.ScheduleUtil.trainStatusMap;
+import static utils.ScheduleUtil.stationStatusMap;
 
 public class CustomReceiver extends Receiver<String> {
     private final Integer port;
@@ -92,29 +95,58 @@ public class CustomReceiver extends Receiver<String> {
                         int train_id = Integer.parseInt(inputLine.substring(6));
                         receiver.put(train_id, clientSocket);
                         while ((inputLine = in.readLine()) != null){
-                            store(inputLine);
+                            String[] cols = inputLine.split(",");
+                            int id = Integer.parseInt(cols[1]);
+                            TrainStatus train;
+                            if(trains.containsKey(id)) {
+                                train = trains.get(id);
+                                BigInteger t = BigInteger.valueOf(Long.parseLong(cols[0]));
+                                Integer lastPosition = train.getPosition();
+                                if(t.compareTo(t) > 0){
+                                    train.setTime(t);
+                                    train.setSpeed(Integer.parseInt(cols[2]));
+                                    train.setPosition(Integer.parseInt(cols[3]));
+                                    train.setPassenger_num(Integer.parseInt(cols[4]));
+                                    trainStatusMap.remove(lastPosition);
+                                    TrainStatus train1 = new TrainStatus(t, id, train.getSpeed(), train.getPosition(), train.getPassenger_num());
+                                    trainStatusMap.put(lastPosition, train1);
+                                }
+                                trains.put(id, train);
+                            }else{
+                                train = new TrainStatus(BigInteger.valueOf(Long.parseLong(cols[0])), id, Integer.parseInt(cols[2]), Integer.parseInt(cols[3]), Integer.parseInt(cols[4]));
+                                trains.put(id, train);
+                                trainStatusMap.put(train.getPosition(), train);
+                            }
                         }
+                        store(inputLine);
                         receiver.remove(train_id);
-                    }else if(inputLine.startsWith("station-")){
+                    }
+                    else if(inputLine.startsWith("station-")){
                         int id = 0;
                         while ((inputLine = in.readLine()) != null){
                             String[] cols = inputLine.split(",");
                             id = Integer.parseInt(cols[0]);
                             Station station;
-                            if(peopleTraffic.containsKey(id)){
-                                station = peopleTraffic.get(id);
+                            if(stations.containsKey(id)){
+                                station = stations.get(id);
                                 BigInteger t = BigInteger.valueOf(Long.parseLong(cols[1]));
+                                Integer stationPosition = station.getPosition();
                                 if(t.compareTo(station.getTime()) > 0){
                                     station.setTime(t);
                                     station.setPeopleNum(Integer.parseInt(cols[2]));
+                                    Station station1 = stationStatusMap.get(stationPosition);
+                                    station1.setPeopleNum(station.getPeopleNum());
+                                    station1.setTime(t);
+                                    stationStatusMap.put(stationPosition, station1);
                                 }
-                                peopleTraffic.put(id, station);
+                                stations.put(id, station);
                             }else{
                                 station = new Station(id, Long.parseLong(cols[1]), Integer.parseInt(cols[2]), Integer.parseInt(cols[3]));
-                                peopleTraffic.put(id, station);
+                                stations.put(id, station);
+                                stationStatusMap.put(station.getPosition(), station);
                             }
                         }
-                        peopleTraffic.remove(id);
+                        stations.remove(id);
                     }
                 }
                 System.out.printf("Closing connection with %s:%d\n",

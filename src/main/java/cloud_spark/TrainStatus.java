@@ -16,11 +16,14 @@ public class TrainStatus implements Comparable<TrainStatus>{
 
     private Integer position;
 
-    public TrainStatus(BigInteger time, int id, int speed, int position) {
+    private Integer passenger_num;
+
+    public TrainStatus(BigInteger time, int id, int speed, int position, int passenger_num) {
         this.time = time;
         this.train_id = id;
         this.speed = speed;
         this.position = position;
+        this.passenger_num = passenger_num;
     }
 
     @Override

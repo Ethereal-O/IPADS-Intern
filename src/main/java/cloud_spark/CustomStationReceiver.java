@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static utils.ScheduleUtil.peopleTraffic;
+import static utils.ScheduleUtil.stations;
 
 
 public class CustomStationReceiver extends Receiver<String> {
@@ -74,17 +74,17 @@ public class CustomStationReceiver extends Receiver<String> {
                     String[] cols = inputLine.split(",");
                     int id = Integer.parseInt(cols[0]);
                     Station station;
-                    if(peopleTraffic.containsKey(id)){
-                        station = peopleTraffic.get(id);
+                    if(stations.containsKey(id)){
+                        station = stations.get(id);
                         BigInteger t = BigInteger.valueOf(Long.parseLong(cols[1]));
                         if(t.compareTo(station.getTime()) > 0){
                             station.setTime(t);
                             station.setPeopleNum(Integer.parseInt(cols[2]));
                         }
-                        peopleTraffic.put(id, station);
+                        stations.put(id, station);
                     }else{
                         station = new Station(id, Long.parseLong(cols[1]), Integer.parseInt(cols[2]), Integer.parseInt(cols[3]));
-                        peopleTraffic.put(id, station);
+                        stations.put(id, station);
                     }
                     //store(inputLine);
                 }

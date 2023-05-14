@@ -17,8 +17,6 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Properties;
 
-import static utils.ScheduleUtil.peopleTraffic;
-
 public class sparkStreaming {
     public static void main(String[] args) throws Exception{
 
@@ -33,15 +31,13 @@ public class sparkStreaming {
 
         JavaReceiverInputDStream<String> trainInfos = jsc.receiverStream(customReceiver);
 
-        //jsc.receiverStream(new CustomStationReceiver(9090));
-
         trainInfos.foreachRDD((VoidFunction2<JavaRDD<String>, Time>) (rdd, time) -> {
             if(rdd != null){
                 SparkSession spark = JavaSparkSessionSingleton.getInstance(conf);
                 JavaRDD<TrainStatus> rowRDD = rdd.map((Function<String, TrainStatus>) line -> {
                     String[] cols = line.split(",");
                     return new TrainStatus(BigInteger.valueOf(Long.parseLong(cols[0])),Integer.parseInt(cols[1]),
-                            Integer.parseInt(cols[2]), Integer.parseInt(cols[3]));
+                            Integer.parseInt(cols[2]), Integer.parseInt(cols[3]), Integer.parseInt(cols[4]));
                 });
 
                 Dataset<Row> dataFrame = spark.createDataFrame(rowRDD, TrainStatus.class);
@@ -59,33 +55,6 @@ public class sparkStreaming {
                         .save();
             }
         });
-
-//        stationInfos.foreachRDD((VoidFunction2<JavaRDD<String>, Time>) (rdd, time) -> {
-//            if(rdd != null){
-//                SparkSession spark = JavaSparkSessionSingleton.getInstance(conf);
-//                JavaRDD<Station> rowRDD = rdd.map((Function<String, Station>) line -> {
-//                    String[] cols = line.split(",");
-//                    int id = Integer.parseInt(cols[0]);
-//                    Station station;
-//                    if(peopleTraffic.containsKey(id)){
-//                        station = peopleTraffic.get(id);
-//                        BigInteger t = BigInteger.valueOf(Long.parseLong(cols[1]));
-//                        if(t.compareTo(station.getTime()) > 0){
-//                            station.setTime(t);
-//                            station.setPeopleNum(Integer.parseInt(cols[2]));
-//                        }
-//                        peopleTraffic.put(id, station);
-//                    }else{
-//                        station = new Station(id, Long.parseLong(cols[1]), Integer.parseInt(cols[2]), Integer.parseInt(cols[3]));
-//                        peopleTraffic.put(id, station);
-//                    }
-//                    return station;
-//                });
-
-//                Dataset<Row> dataFrame = spark.createDataFrame(rowRDD, Station.class);
-//                dataFrame.show();
-//            }
-//        });
 
         jsc.start();
         jsc.awaitTermination();
