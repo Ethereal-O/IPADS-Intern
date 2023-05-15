@@ -13,4 +13,4 @@ def start():
     sche.start_all()
 
     # test
-    # info_manager.set_linear_x(0.15)
+    info_manager.set_linear_x(0.15)

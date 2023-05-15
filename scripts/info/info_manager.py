@@ -52,7 +52,7 @@ class infoManager:
     def get_linear_x(self):
         return self.twist.linear.x
 
-    # @helper.log_printer
+    @helper.log_printer
     def set_linear_x(self, val):
         self.twist.linear.x = val
 

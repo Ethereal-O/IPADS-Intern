@@ -30,7 +30,7 @@ class sockets:
         while (True):
             recv_data = self.tcp_socket.recvfrom(config.BUF_SIZE)
             info_manager.set_linear_x(
-                float(recv_data[0].decode('utf-8'))/config.SPEED_SCALE)
+                float(recv_data[0].decode('utf-8').split(config.END_FLAG)[0])/config.SPEED_SCALE)
 
     def send_message(self, message):
         self.tcp_socket.send((str(message)+config.END_FLAG).encode("utf-8"))

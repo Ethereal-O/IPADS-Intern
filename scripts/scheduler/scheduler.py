@@ -59,8 +59,8 @@ class scheduler:
     def check_and_report(self, stop_time):
         # if stop_time > config.MAXSTOPTIME:
         #     self.wsapp.send_message(stop_time)
-        if stop_time > config.MAX_STOP_TIME:
-            self.tcp_client.send_message(stop_time)
+        # if stop_time > config.MAX_STOP_TIME:
+        #     self.tcp_client.send_message(stop_time)
         pass
 
     def resume_running(self):
