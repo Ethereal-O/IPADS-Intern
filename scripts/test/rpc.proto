@@ -22,21 +22,21 @@ option objc_class_prefix = "HLW";
 package rpc;
 
 service RPC {
-  rpc get_passenger_num (GPNRequest) returns (GPNReply) {}
-  rpc reduce_passenger_num (RPNRequest) returns (RPNReply) {}
+  rpc GetPassengerNum (GPNRequest) returns (GPNReply) {}
+  rpc ReducePassengerNum (RPNRequest) returns (RPNReply) {}
 }
 
 message GPNRequest {
-  int32 station_id = 1;
+  int32 stationId = 1;
 }
 
 message GPNReply {
-  int32 passenger_num = 1;
+  int32 passengerNum = 1;
 }
 
 message RPNRequest {
-  int32 station_id = 1;
-  int32 boarder_num = 2;
+  int32 stationId = 1;
+  int32 boarderNum = 2;
 }
 
 message RPNReply {

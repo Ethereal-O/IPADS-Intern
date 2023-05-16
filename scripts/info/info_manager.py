@@ -3,6 +3,7 @@ import rospy
 import json
 from config import config
 from helper.helper import helper
+import time
 
 
 class infoManager:
@@ -51,6 +52,7 @@ class infoManager:
     def get_linear_x(self):
         return self.twist.linear.x
 
+    # @helper.log_printer
     def set_linear_x(self, val):
         self.twist.linear.x = val
 
@@ -80,9 +82,13 @@ class infoManager:
     def set_passenger_num(self, val):
         self.passenger_num = val
 
+    # @helper.log_printer
     def get_all(self):
-        data = [{'id': self.id, 'mileage': self.mileage, 'speed': self.twist.linear.x,
-                 'passenger_num': self.passenger_num}]
+        # data = [{'id': self.id, 'mileage': self.mileage, 'speed': self.twist.linear.x,
+        #          'passenger_num': self.passenger_num}]
+        data = str(int(1000*time.time()))+","+str(self.id)+","+str(int(config.SPEED_SCALE*self.twist.linear.x)) + \
+            ","+str(int(0 if self.mileage < 0 else config.MILEAGE_SCALE*self.mileage)) + \
+            ","+str(self.passenger_num)
         return data
 
     def stop(self):

@@ -16,6 +16,9 @@ class sockets:
     def start(self):
         self.tcp_socket.connect(
             (config.CLOUD_SERVER_IP, config.CLOUD_SERVE_PORT))
+        self.fd = self.tcp_socket.makefile('rw')
+        self.send_message(config.CAR_INDENTITY +
+                          str(config.CAR_ID))
         threading.Thread(target=self.report).start()
         threading.Thread(target=self.recv_msg).start()
 
@@ -26,8 +29,10 @@ class sockets:
 
     def recv_msg(self):
         while (True):
-            recv_data = self.tcp_socket.recvfrom(config.BUF_SIZE)
-            info_manager.set_linear_x(float(recv_data[0].decode('utf-8')))
-
+            recv_data = self.fd.readline()
+            info_manager.set_linear_x(
+                float(recv_data)/config.SPEED_SCALE)
+            
     def send_message(self, message):
-        self.tcp_socket.send(str(message).encode("utf-8"))
+        self.fd.write(str(message)+config.END_FLAG)
+        self.fd.flush()
