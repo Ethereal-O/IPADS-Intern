@@ -11,6 +11,7 @@ class sockets:
         self.tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def __del__(self):
+        self.fd.close()
         self.tcp_socket.close()
 
     def start(self):

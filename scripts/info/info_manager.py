@@ -86,7 +86,7 @@ class infoManager:
     def get_all(self):
         # data = [{'id': self.id, 'mileage': self.mileage, 'speed': self.twist.linear.x,
         #          'passenger_num': self.passenger_num}]
-        data = str(int(1000*time.time()))+","+str(self.id)+","+str(int(config.SPEED_SCALE*self.twist.linear.x)) + \
+        data = str(int(config.TIME_SCALE*time.time()))+","+str(self.id)+","+str(int(config.SPEED_SCALE*self.twist.linear.x)) + \
             ","+str(int(0 if self.mileage < 0 else config.MILEAGE_SCALE*self.mileage)) + \
             ","+str(self.passenger_num)
         return data

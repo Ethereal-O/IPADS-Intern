@@ -18,6 +18,11 @@ class scheduler:
         self.rpc_client = rpc_client()
         self.have_stop = {}
 
+    def __del__(self):
+        rospy.logwarn("closing")
+        self.tcp_client.__del__()
+        self.rpc_client.__del__()
+
     def publish_twist(self):
         twist = info_manager.get_twist()
         if not info_manager.get_is_running():

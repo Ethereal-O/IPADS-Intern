@@ -1,6 +1,5 @@
 import rospy
 import time
-import signal
 
 
 class helpers:
@@ -36,4 +35,3 @@ class helpers:
 
 
 helper = helpers()
-signal.signal(signal.SIGINT, lambda signum, frame: helper.__del__())
