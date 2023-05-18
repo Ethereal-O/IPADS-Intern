@@ -12,8 +12,8 @@ def start():
     sche = scheduler.scheduler()
 
     def __del__():
-        sche.__del__()
         helper.__del__()
+        sche.__del__()
 
     time.sleep(10*config.SLEEP_TIME)
     sche.start_all()

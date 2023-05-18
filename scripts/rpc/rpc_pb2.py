@@ -13,14 +13,13 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\trpc.proto\x12\x03rpc\"\x1f\n\nGPNRequest\x12\x11\n\tstationId\x18\x01 \x01(\x05\" \n\x08GPNReply\x12\x14\n\x0cpassengerNum\x18\x01 \x01(\x05\"3\n\nRPNRequest\x12\x11\n\tstationId\x18\x01 \x01(\x05\x12\x12\n\nboarderNum\x18\x02 \x01(\x05\"\x16\n\x08RPNReply\x12\n\n\x02ok\x18\x01 \x01(\x05\x32r\n\x03RPC\x12\x33\n\x0fGetPassengerNum\x12\x0f.rpc.GPNRequest\x1a\r.rpc.GPNReply\"\x00\x12\x36\n\x12ReducePassengerNum\x12\x0f.rpc.RPNRequest\x1a\r.rpc.RPNReply\"\x00\x42(\n\x14io.grpc.examples.rpcB\x08RpcProtoP\x01\xa2\x02\x03HLWb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\trpc.proto\x12\x03rpc\"\x1f\n\nGPNRequest\x12\x11\n\tstationId\x18\x01 \x01(\x05\" \n\x08GPNReply\x12\x14\n\x0cpassengerNum\x18\x01 \x01(\x05\"3\n\nRPNRequest\x12\x11\n\tstationId\x18\x01 \x01(\x05\x12\x12\n\nboarderNum\x18\x02 \x01(\x05\"\x16\n\x08RPNReply\x12\n\n\x02ok\x18\x01 \x01(\x05\x32r\n\x03RPC\x12\x33\n\x0fGetPassengerNum\x12\x0f.rpc.GPNRequest\x1a\r.rpc.GPNReply\"\x00\x12\x36\n\x12ReducePassengerNum\x12\x0f.rpc.RPNRequest\x1a\r.rpc.RPNReply\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'rpc_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'\n\024io.grpc.examples.rpcB\010RpcProtoP\001\242\002\003HLW'
   _GPNREQUEST._serialized_start=18
   _GPNREQUEST._serialized_end=49
   _GPNREPLY._serialized_start=51
