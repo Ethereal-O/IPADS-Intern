@@ -2,11 +2,12 @@ import socket
 import threading
 import time
 from config import config
-from info.info_manager import info_manager
+from info.info_manager import info_manager_thread_local
 
 
 class simulate:
     def __init__(self):
+        self.info_manager = info_manager_thread_local.info_manager
         self.tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def __del__(self):
@@ -23,7 +24,7 @@ class simulate:
 
     def report(self):
         while self.running:
-            self.send_message(info_manager.get_simualte_all())
+            self.send_message(self.info_manager.get_simualte_all())
             time.sleep(config.SLEEP_TIME)
 
     def send_message(self, message):

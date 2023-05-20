@@ -3,7 +3,7 @@ def start():
     from scheduler import scheduler
     from odometry import odometry
     from config import config
-    from info.info_manager import info_manager
+    from info.info_manager import info_manager_thread_local
     from helper.helper import helper
     import time
     follower = line_follow.Follower()
@@ -18,5 +18,7 @@ def start():
     sche.start_all()
 
     # test
-    info_manager.set_linear_x(0.05)
+    if info_manager_thread_local.info_manager.get_id() == 0:
+        info_manager_thread_local.info_manager.set_linear_x(0.05)
+    # info_manager_thread_local.info_manager.set_linear_x(0.05)
     return __del__

@@ -2,6 +2,7 @@ import json
 from config import config
 from helper.helper import helper
 import time
+import threading
 
 
 class infoManager:
@@ -25,7 +26,6 @@ class infoManager:
 
     def set_id(self, val):
         self.id = val
-        helper.set_car_id(val)
 
     def get_id(self):
         return self.id
@@ -96,13 +96,14 @@ class infoManager:
             ","+str(self.passenger_num)
         return data
 
+    # @helper.log_printer
     def get_simualte_all(self):
-        data = str(self.id)+","+str(int(0 if self.mileage <
-                                        0 else config.MILEAGE_SCALE*self.mileage))
+        data = str(self.id)+","+str(int(0 if self.mileage < 0 else config.MILEAGE_SCALE *
+                                        self.mileage))+","+str(int(config.TIME_SCALE*time.time()))
         return data
 
     def stop(self):
         self.speed = 0
 
 
-info_manager = infoManager()
+info_manager_thread_local = threading.local()

@@ -1,4 +1,4 @@
-from info.info_manager import info_manager
+from info.info_manager import info_manager_thread_local
 import threading
 import time
 from config import config
@@ -11,7 +11,7 @@ import random
 
 class scheduler:
     def __init__(self):
-        # self.wsapp = webSocket.webSocket()
+        self.info_manager = info_manager_thread_local.info_manager
         self.tcp_client = sockets.sockets()
         self.simulate_client = simulate.simulate()
         self.rpc_client = rpc_client()
@@ -42,22 +42,23 @@ class scheduler:
 
     def check_is_stop(self, mileage):
         mileage *= 10
-        if (mileage % 10 <= 1 or mileage % 10 >= 9) and self.have_stop.get(mileage//10) == None:
+        if (mileage % 10 <= 1 or mileage % 10 >= 9) and self.have_stop.get(mileage//10) == None and mileage >= 1:
             self.have_stop[mileage//10] = True
             return True
         return False
 
     def caculate_stop_num(self, mileage):
-        return 0 if mileage < 0 else (mileage*10)//10
+        return 0 if mileage < 0 else (mileage*10)//10+1
 
     def caculate_new_passenger(self, num):
-        now_num = info_manager.get_passenger_num()
+        now_num = self.info_manager.get_passenger_num()
         get_off_num = min(
             int(random.random()*config.RANDOM_GETOFF_SCALE), now_num)
         new_num = min(config.CAPICITY, num+now_num-get_off_num)
         get_on_num = new_num-now_num+get_off_num
         max_change = max(get_off_num, get_on_num)
-        return new_num, get_off_num, get_on_num, max_change/config.HUMAN_SPEED
+        max_time = max(config.MIN_STOP_TIME, max_change/config.HUMAN_SPEED)
+        return new_num, get_off_num, get_on_num, max_time
 
     def check_and_report(self, stop_time):
         # if stop_time > config.MAXSTOPTIME:
@@ -67,26 +68,31 @@ class scheduler:
         pass
 
     def resume_running(self):
-        info_manager.set_is_running_outsidestop(True)
+        self.info_manager.set_is_running_outsidestop(True)
 
     def rpc_check_loop(self):
         while (True):
-            if info_manager.get_is_running_outsidestop() and self.check_is_stop(info_manager.get_mileage()):
+            if self.info_manager.get_is_running_outsidestop() and self.check_is_stop(self.info_manager.get_mileage()):
                 # stop running
-                info_manager.set_is_running_outsidestop(False)
+                self.info_manager.set_is_running_outsidestop(False)
                 # get passenger
                 want_num = self.rpc_client.get_passenger_num(
-                    self.caculate_stop_num(info_manager.get_mileage()))
+                    self.caculate_stop_num(self.info_manager.get_mileage()))
                 # get real passenger
                 now_num, get_off_num, get_on_num, stop_time = self.caculate_new_passenger(
                     want_num)
                 # reply to edge server
-                self.rpc_client.reduce_passenger_num(
-                    self.caculate_stop_num(info_manager.get_mileage()), get_on_num)
+                stop_num = self.caculate_stop_num(
+                    self.info_manager.get_mileage())
+                self.rpc_client.reduce_passenger_num(stop_num, get_on_num)
                 # check and report
                 self.check_and_report(stop_time)
                 # set passenger
-                info_manager.set_passenger_num(now_num)
+                self.info_manager.set_passenger_num(now_num)
+                if stop_num > config.MAX_STOP_NUM:
+                    print(self.info_manager.get_id(), "stop")
+                    self.info_manager.set_linear_x(0)
+                    break
                 # start timer to resume
                 threading.Timer(stop_time,
                                 self.resume_running).start()

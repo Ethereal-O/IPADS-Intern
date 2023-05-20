@@ -14,7 +14,7 @@ class rpcImpl(rpc_pb2_grpc.RPCServicer):
         return rpc_pb2.GPNReply(passengerNum=num)
 
     def ReducePassengerNum(self, request, context):
-        # print("get report")
+        print("get report")
         return rpc_pb2.RPNReply(ok=1)
 
 
