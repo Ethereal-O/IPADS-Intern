@@ -24,7 +24,9 @@ class sockets:
         threading.Thread(target=self.recv_msg).start()
 
     def report(self):
-        while self.running:
+        while True:
+            if not (self.running and self.info_manager.get_is_running()):
+                continue
             self.send_message(info_manager.get_all())
             time.sleep(config.SLEEP_TIME)
 

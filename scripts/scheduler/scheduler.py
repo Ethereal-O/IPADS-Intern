@@ -44,7 +44,7 @@ class scheduler:
 
     def check_is_stop(self, mileage):
         mileage *= 10
-        if (mileage % 10 <= 1 or mileage % 10 >= 9) and self.have_stop.get(mileage//10) == None:
+        if (mileage % 10 <= 2 or mileage % 10 >= 8) and self.have_stop.get(mileage//10) == None and mileage >= 1:
             self.have_stop[mileage//10] = True
             return True
         return False
@@ -59,7 +59,8 @@ class scheduler:
         new_num = min(config.CAPICITY, num+now_num-get_off_num)
         get_on_num = new_num-now_num+get_off_num
         max_change = max(get_off_num, get_on_num)
-        return new_num, get_off_num, get_on_num, max_change/config.HUMAN_SPEED
+        max_time = max(config.MIN_STOP_TIME, max_change/config.HUMAN_SPEED)
+        return new_num, get_off_num, get_on_num, max_time
 
     def check_and_report(self, stop_time):
         # if stop_time > config.MAXSTOPTIME:
@@ -83,12 +84,17 @@ class scheduler:
                 now_num, get_off_num, get_on_num, stop_time = self.caculate_new_passenger(
                     want_num)
                 # reply to edge server
+                stop_num = self.caculate_stop_num(
+                    info_manager.get_mileage())
                 self.rpc_client.reduce_passenger_num(
-                    self.caculate_stop_num(info_manager.get_mileage()), get_on_num)
+                    self.caculate_stop_num(stop_num), get_on_num)
                 # check and report
                 self.check_and_report(stop_time)
                 # set passenger
                 info_manager.set_passenger_num(now_num)
+                if stop_num > config.MAX_STOP_NUM:
+                    info_manager.stop()
+                    break
                 # start timer to resume
                 threading.Timer(stop_time,
                                 self.resume_running).start()
