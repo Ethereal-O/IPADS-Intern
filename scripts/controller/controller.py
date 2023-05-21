@@ -20,4 +20,5 @@ def start():
     signal.signal(signal.SIGINT, lambda signum, frame: __del__())
 
     # test
-    info_manager.set_linear_x(0.05)
+    if config.CAR_ID == 0:
+        info_manager.set_linear_x(0.05)

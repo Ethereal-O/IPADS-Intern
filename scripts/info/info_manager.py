@@ -91,6 +91,7 @@ class infoManager:
             ","+str(self.passenger_num)
         return data
 
+    @helper.log_printer
     def stop(self):
         self.twist = Twist()
 
