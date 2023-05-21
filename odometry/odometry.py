@@ -14,4 +14,4 @@ class odometry:
             if self.info_manager.get_is_running():
                 self.info_manager.set_mileage(self.info_manager.get_mileage(
                 ) + config.SLEEP_TIME*self.info_manager.get_linear_x())
-            time.sleep(config.SLEEP_TIME)
+            time.sleep(0.1*config.SLEEP_TIME)

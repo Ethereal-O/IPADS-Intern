@@ -20,12 +20,15 @@ class sockets:
             (config.CLOUD_SERVER_IP, config.CLOUD_SERVE_PORT))
         self.fd = self.tcp_socket.makefile("rw")
         self.running = True
-        self.send_message(config.CAR_INDENTITY + str(self.info_manager.get_id()))
+        self.send_message(config.CAR_INDENTITY +
+                          str(self.info_manager.get_id()))
         threading.Thread(target=self.report).start()
         threading.Thread(target=self.recv_msg).start()
 
     def report(self):
-        while self.running and self.info_manager.get_is_running():
+        while True:
+            if not (self.running and self.info_manager.get_is_running()):
+                continue
             self.send_message(self.info_manager.get_all())
             time.sleep(config.SLEEP_TIME)
 

@@ -42,7 +42,7 @@ class scheduler:
 
     def check_is_stop(self, mileage):
         mileage *= 10
-        if (mileage % 10 <= 1 or mileage % 10 >= 9) and self.have_stop.get(mileage//10) == None and mileage >= 1:
+        if (mileage % 10 <= 2 or mileage % 10 >= 8) and self.have_stop.get(mileage//10) == None and mileage >= 1:
             self.have_stop[mileage//10] = True
             return True
         return False
@@ -90,13 +90,12 @@ class scheduler:
                 # set passenger
                 self.info_manager.set_passenger_num(now_num)
                 if stop_num > config.MAX_STOP_NUM:
-                    print(self.info_manager.get_id(), "stop")
-                    self.info_manager.set_linear_x(0)
+                    self.info_manager.stop()
                     break
                 # start timer to resume
                 threading.Timer(stop_time,
                                 self.resume_running).start()
-            time.sleep(config.SLEEP_TIME)
+            time.sleep(0.5*config.SLEEP_TIME)
 
     def start_rpc_checker(self):
         threading.Thread(target=self.rpc_check_loop).start()
