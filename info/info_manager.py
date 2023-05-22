@@ -88,6 +88,7 @@ class infoManager:
         self.passenger_num = val
 
     # @helper.log_printer
+    @helper.log_to_file
     def get_all(self):
         # data = [{'id': self.id, 'mileage': self.mileage, 'speed': self.twist.linear.x,
         #          'passenger_num': self.passenger_num}]

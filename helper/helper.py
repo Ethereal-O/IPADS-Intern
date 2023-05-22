@@ -1,4 +1,5 @@
 import time
+import config.config as config
 
 
 class helpers:
@@ -29,6 +30,14 @@ class helpers:
             val = func(*arg, **kwargs)
             print("[%s][%s] parameters: %s, return %s" %
                   (arg[0].id, func.__name__, arg, val))
+            return val
+        return new_func
+
+    def log_to_file(self, func):
+        def new_func(*arg, **kwargs):
+            val = func(*arg, **kwargs)
+            with open("./log/log"+str(arg[0].id)+".txt", "a") as f:
+                f.write(val+config.END_FLAG)
             return val
         return new_func
 
