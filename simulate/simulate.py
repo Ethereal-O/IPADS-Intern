@@ -24,7 +24,8 @@ class simulate:
 
     def report(self):
         while self.running:
-            self.send_message(self.info_manager.get_simualte_all())
+            if self.info_manager.get_mileage() > 0:
+                self.send_message(self.info_manager.get_simualte_all())
             time.sleep(config.SLEEP_TIME)
 
     def send_message(self, message):

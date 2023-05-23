@@ -1,5 +1,6 @@
 import threading
 import car
+from config import config
 
 
 def start_simulate(times):
@@ -9,4 +10,4 @@ def start_simulate(times):
 
 
 if __name__ == "__main__":
-    start_simulate(10)
+    start_simulate(config.MAX_CAR_NUM)
